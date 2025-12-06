@@ -1,0 +1,1 @@
+<h3>Trend Ürünler</h3><?php echo do_shortcode('[products limit="8" columns="4" ]'); ?>
