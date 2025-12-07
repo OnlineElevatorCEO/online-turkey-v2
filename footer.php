@@ -1,0 +1,1 @@
+<footer class='ot-footer'><p> 2025 Online Turkey  Global Marketplace</p></footer><?php wp_footer(); ?></body></html>

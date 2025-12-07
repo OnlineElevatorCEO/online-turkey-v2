@@ -1,0 +1,1 @@
+<h3>Kategoriler</h3><div class='cat-boxes'><div class='cat-box'>Kategori 1</div><div class='cat-box'>Kategori 2</div><div class='cat-box'>Kategori 3</div></div>
