@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -14,17 +16,28 @@ function App() {
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
       <h1>Online Turkey – Ürün Listesi</h1>
 
-      {products.length === 0 ? (
-        <p>Ürünler yükleniyor...</p>
-      ) : (
-        <ul>
-          {products.map((p) => (
-            <li key={p.id}>
-              {p.name} – {p.price}₺
-            </li>
-          ))}
-        </ul>
-      )}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            products.length === 0 ? (
+              <p>Ürünler yükleniyor...</p>
+            ) : (
+              <ul>
+                {products.map((p) => (
+                  <li key={p.id} style={{ marginBottom: "10px" }}>
+                    <Link to={`/product/${p.id}`}>
+                      {p.name} – {p.price}₺
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+        />
+
+        <Route path="/product/:id" element={<ProductDetail />} />
+      </Routes>
     </div>
   );
 }
