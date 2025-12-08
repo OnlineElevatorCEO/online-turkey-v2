@@ -1,32 +1,41 @@
 import { useEffect, useState } from "react";
 
-function App() {
+const API_URL = "https://ot-backend-2.onrender.com/api/products";
+
+export default function App() {
   const [products, setProducts] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    fetch("https://ot-backend-2.onrender.com/api/products")
+    fetch(API_URL)
       .then((res) => res.json())
       .then((data) => setProducts(data))
-      .catch((err) => console.error("API ERROR:", err));
+      .catch(() => setProducts([]));
   }, []);
 
-  return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1>Ürünler</h1>
+  if (selected) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <button onClick={() => setSelected(null)}> Geri dön</button>
+        <h1>{selected.name}</h1>
+        <p>Fiyat: {selected.price}?</p>
+      </div>
+    );
+  }
 
-      {products.length === 0 ? (
-        <p>Yükleniyor...</p>
-      ) : (
-        <ul>
-          {products.map((p) => (
-            <li key={p.id}>
-              {p.name} {p.price}?
-            </li>
-          ))}
-        </ul>
-      )}
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Ürünler</h1>
+      <ul>
+        {products.map((p) => (
+          <li key={p.id}
+              style={{ cursor: "pointer", marginBottom: "8px" }}
+              onClick={() => setSelected(p)}
+          >
+            {p.name}  {p.price}?
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
-
-export default App;
