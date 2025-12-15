@@ -1,16 +1,29 @@
 import { useEffect, useState } from "react";
-
-const API_URL = "https://ot-backend-2.onrender.com/api/products";
+import { getAllProducts } from "./services/productService";
 
 export default function App() {
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch(() => setProducts([]));
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await getAllProducts();
+        setProducts(data);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to load products:", err);
+        setError("Failed to load products");
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   // ÜRÜNLER SAYFASI
@@ -26,13 +39,17 @@ export default function App() {
 
         <h2>Ürünler</h2>
 
-        <ul>
-          {products.map((p) => (
-            <li key={p.id}>
-              {p.name} — {p.fiyat}₺
-            </li>
-          ))}
-        </ul>
+        {loading && <p>Yükleniyor...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {!loading && !error && (
+          <ul>
+            {products.map((p) => (
+              <li key={p.id}>
+                {p.name} — {p.price || p.fiyat}₺
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     );
   }
@@ -48,6 +65,9 @@ export default function App() {
       >
         Ürünleri Gör
       </button>
+
+      {loading && <p>Yükleniyor...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
